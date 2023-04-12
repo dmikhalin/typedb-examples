@@ -47,8 +47,7 @@ def parse_data_to_dictionaries(input):  # input.file is a string: the path to th
         for row in csv.DictReader(data, delimiter=";", skipinitialspace=True):  # iterate through rows
             item = {key: value for key, value in row.items()}  # Creates an item. Keys are taken from the first row
             items.append(item)  # adds the dictionary to the list of items
-    if debug:
-        print("Parsing of " + input["file"] + " successful.")
+    if debug: print("Parsing of " + input["file"] + " successful.")
     return items  # items as list of dictionaries: each item representing a data item from the file at loader.file
 
 
@@ -70,8 +69,7 @@ def load_data_into_typedb(loader, session):  # Requests generation of insert que
                 transaction.commit()  # commits the transaction
                 # todo: Add a transaction result check. Increase skip_cont if nothing was inserted
             else:
-                if debug:
-                    print("Item parsing resulted in empty query statement. Skipping this item —", item)
+                if debug: print("Item parsing resulted in empty query statement. Skipping this item —", item)
                 skip_count += 1
     loaded_count = len(items) - skip_count
     print("Inserted " + str(loaded_count) + " out of " + str(len(items)) + " items from [ "
