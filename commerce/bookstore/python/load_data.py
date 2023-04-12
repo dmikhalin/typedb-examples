@@ -21,11 +21,10 @@
 
 import csv
 import os
+from typedb.client import TypeDB, SessionType, TransactionType
 import loaders
 import config
 import argparse
-
-from typedb.client import TypeDB, SessionType, TransactionType
 
 # Verbosity option implementation
 parser = argparse.ArgumentParser(description='Loads data into TypeDB for the Bookstore example')
@@ -59,8 +58,7 @@ def load_data_into_typedb(loader, session):  # Requests generation of insert que
     items = parse_data_to_dictionaries(loader)  # parses csv file (loader.file) to create a list of dictionaries
     skip_count = 0  # counter of non-successful insert attempts
     for item in items:  # for each item dictionary in the list (former row in csv file)
-        with session.transaction(
-                TransactionType.WRITE) as transaction:  # Open transaction to write with session provided
+        with session.transaction(TransactionType.WRITE) as transaction:  # Open transaction to write with session provided
             input_object = loader(item)  # This is an object of one of the Loader subclass initiated with an item
             typeql_insert_query = input_object.load()  # This builds the corresponding TypeQL insert query from item
             if typeql_insert_query != "":
@@ -84,7 +82,7 @@ def load_data(client):  # Main data load function
             if debug: print("Loading from [" + loader("").file + "] into TypeDB ...")
             res.append(load_data_into_typedb(loader, session))  # Call loader to load data with session
         print("\nData loading complete!")
-        if debug: print("We have inserted the following number of items:", res)
+        if debug: print("We have inserted the following nu,ber of items:", res)
     return res
 
 
